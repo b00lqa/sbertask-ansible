@@ -1,0 +1,44 @@
+---
+- name: Ensure git is installed
+  apt:
+    name: git
+    state: present
+    update_cache: true
+
+- name: Clone or update application repository
+  git:
+    repo: "{{ app_repo_url }}"
+    dest: "{{ app_dest }}"
+    version: main
+    update: true
+    force: true
+  register: git_result
+  notify: reload compose          
+
+- name: Render project settings.py
+  template:
+    src: settings.py.j2
+    dest: "{{ app_dest }}/myapp/settings.py"   # путь до settings.py внутри репо
+    mode: "0644"
+  vars:
+    host_ip: "{{ ansible_facts['default_ipv4']['address'] }}"
+  register: settings_tpl
+  notify: reload compose
+
+- name: Render .env file
+  template:
+    src: env.j2
+    dest: "{{ app_dest }}/.env"
+    mode: "0600"
+  register: env_tpl
+  notify: reload compose          
+
+- name: Ensure application stack is running
+  command: docker compose up -d
+  environment:
+    DOCKER_BUILDKIT: "0"
+    COMPOSE_DOCKER_CLI_BUILD: "0"
+  args:
+    chdir: "{{ app_dest }}"
+  changed_when: false             
+  when: not (git_result.changed or env_tpl.changed)

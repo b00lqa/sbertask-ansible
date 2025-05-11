@@ -6,9 +6,9 @@
   failed_when: false
 
 - name: Include repo‑setup tasks when Docker is missing
-  include_tasks: setup_repo.yml
+  include_tasks: setup_repo.yaml
   when: docker_check.rc != 0
 
 - name: Include installation tasks when Docker is missing
-  include_tasks: install.yml
+  include_tasks: install.yaml
   when: docker_check.rc != 0

@@ -1,0 +1,11 @@
+---
+app_repo_url: "https://github.com/b00lqa/sbertask-web.git"
+app_dest: "/opt/myapp"
+
+db_name: "myapp"
+db_user: "myapp"
+db_password: "secret"
+db_host: "postgres"
+db_port: "5432"
+
+nginx_port: "8080"
