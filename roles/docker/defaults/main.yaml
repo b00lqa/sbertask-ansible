@@ -1,0 +1,8 @@
+---
+docker_apt_repo: "https://download.docker.com/linux/ubuntu"
+docker_apt_key_url: "https://download.docker.com/linux/ubuntu/gpg"
+docker_apt_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+docker_package_state: present      # можно переопределить (latest/absent)

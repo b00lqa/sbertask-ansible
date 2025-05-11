@@ -1,0 +1,14 @@
+---
+- name: Check if Docker binary already exists
+  command: docker --version
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Include repo‑setup tasks when Docker is missing
+  include_tasks: setup_repo.yml
+  when: docker_check.rc != 0
+
+- name: Include installation tasks when Docker is missing
+  include_tasks: install.yml
+  when: docker_check.rc != 0

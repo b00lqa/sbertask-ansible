@@ -1,0 +1,8 @@
+---
+- name: Provision Ubuntu hosts
+  hosts: all
+  become: true
+
+  roles:
+    - role: docker       
+    # - role: placeholder_role      

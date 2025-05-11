@@ -1,0 +1,13 @@
+---
+- name: Install Docker packages
+  apt:
+    name: "{{ docker_apt_packages }}"
+    state: "{{ docker_package_state }}"
+    update_cache: true
+  notify: restart docker
+
+- name: Ensure current user is in docker group
+  user:
+    name: "{{ ansible_user | default(ansible_user_id) }}"
+    groups: docker
+    append: true
